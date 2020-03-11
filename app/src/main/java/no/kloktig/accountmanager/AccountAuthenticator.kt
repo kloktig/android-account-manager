@@ -15,7 +15,7 @@ class AccountAuthenticator(private val context: Context) : AbstractAccountAuthen
         requiredFeatures: Array<String?>?,
         options: Bundle?
     ): Bundle {
-        val intent = Intent(context, LoginActivity::class.java).apply {
+        val intent = Intent(context, RegisterActivity::class.java).apply {
             putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response)
             putExtra(AccountManager.KEY_ACCOUNT_TYPE, accountType)
             putExtra(AccountManager.KEY_AUTH_TOKEN_LABEL, authTokenType)

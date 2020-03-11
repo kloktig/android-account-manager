@@ -9,7 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import kotlin.system.exitProcess
 
-class LoginActivity : AccountAuthenticatorActivity(), View.OnClickListener {
+class RegisterActivity : AccountAuthenticatorActivity(), View.OnClickListener {
     private lateinit var am: AccountManager
     private lateinit var email: String
     private lateinit var password: String
@@ -58,7 +58,7 @@ class LoginActivity : AccountAuthenticatorActivity(), View.OnClickListener {
         return ViewParameters(
             email = R.id.email.get<EditText>().apply { setText(email) },
             password = R.id.password.get(),
-            loginButton = R.id.login_btn.get<Button>().apply { setOnClickListener(this@LoginActivity) }
+            loginButton = R.id.login_btn.get<Button>().apply { setOnClickListener(this@RegisterActivity) }
         )
     }
 

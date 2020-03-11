@@ -8,8 +8,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import androidx.core.app.ActivityCompat.startActivityForResult
-import no.kloktig.accountmanager.LoginActivity.Companion.ACCOUNT_TYPE
-import no.kloktig.accountmanager.LoginActivity.Companion.AUTH_TOKEN_TYPE
+import no.kloktig.accountmanager.RegisterActivity.Companion.ACCOUNT_TYPE
+import no.kloktig.accountmanager.RegisterActivity.Companion.AUTH_TOKEN_TYPE
 
 class MainActivity : Activity() {
     private lateinit var am: AccountManager
@@ -18,7 +18,7 @@ class MainActivity : Activity() {
     private var authToken: String? = null
 
     companion object {
-        private val LOGIN = 1
+        private val REGISTER = 1
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,7 +56,7 @@ class MainActivity : Activity() {
             val intent = bundle[AccountManager.KEY_INTENT] as Intent?
 
             if (null != intent) {
-                startActivityForResult(MainActivity(), intent, LOGIN, null)
+                startActivityForResult(MainActivity(), intent, REGISTER, null)
             } else {
                 bundle.getString(AccountManager.KEY_AUTHTOKEN)?.let { prefs.authToken = it }
                 bundle.getString(AccountManager.KEY_ACCOUNT_NAME)?.let { prefs.username = it }
