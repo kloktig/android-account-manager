@@ -1,4 +1,4 @@
-package no.kloktig.accountmanager
+package no.kloktig.library
 
 import android.accounts.Account
 import android.accounts.AccountAuthenticatorActivity
@@ -44,7 +44,8 @@ class RegisterActivity : AccountAuthenticatorActivity(), View.OnClickListener {
         val account = Account(email, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE))
 
         am.addAccountExplicitly(account, null, null)
-        am.setAuthToken(account, AUTH_TOKEN_TYPE, authToken)
+        am.setAuthToken(account,
+            AUTH_TOKEN_TYPE, authToken)
 
         setAccountAuthenticatorResult(intent.extras)
         setResult(RESULT_OK, intent)

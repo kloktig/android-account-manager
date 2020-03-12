@@ -1,4 +1,4 @@
-package no.kloktig.accountmanager
+package no.kloktig.library
 
 import android.accounts.*
 import android.content.Context

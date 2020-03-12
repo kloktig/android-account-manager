@@ -1,0 +1,40 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+package="no.kloktig.library">
+
+<uses-permission
+    android:name="android.permission.AUTHENTICATE_ACCOUNTS"
+    android:maxSdkVersion="22" />
+<uses-permission
+    android:name="android.permission.GET_ACCOUNTS"
+    android:maxSdkVersion="22" />
+<uses-permission
+    android:name="android.permission.MANAGE_ACCOUNTS"
+    android:maxSdkVersion="22" />
+
+<application
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    android:roundIcon="@mipmap/ic_launcher_round"
+    android:supportsRtl="true"
+    android:theme="@style/AppTheme">
+
+    <service
+        android:name="no.kloktig.library.AuthenticatorService" >
+        <intent-filter>
+            <action android:name="android.accounts.AccountAuthenticator" />
+        </intent-filter>
+
+        <meta-data
+            android:name="android.accounts.AccountAuthenticator"
+            android:resource="@xml/authenticator" />
+    </service>
+
+    <activity android:name="no.kloktig.library.RegisterActivity"
+        android:label="@string/register">
+    </activity>
+
+
+</application>
+
+
+</manifest>
