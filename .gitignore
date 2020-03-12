@@ -87,3 +87,5 @@ lint/tmp/
 # IDE
 .DS_Store
 .idea/**
+
+**/release/**

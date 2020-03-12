@@ -1,3 +1,4 @@
 rootProject.name='Account Manager'
 include ':app'
+include ':app2'
 include ':library'
