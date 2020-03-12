@@ -1,17 +1,23 @@
 import android.content.Context
 import android.content.SharedPreferences
 
-class AuthPreferences(context: Context) {
+class AuthPreferences(context: Context) : AuthLocalStorage {
     private val PREFS_NAME = "auth"
     private val KEY_ACCOUNT_NAME = "account_name"
     private val KEY_AUTH_TOKEN = "auth_token"
+    private val KEY_USERID = "user_id"
+
     private val preferences: SharedPreferences
 
-    var authToken: String
+    override var refreshToken: String
         get() = KEY_AUTH_TOKEN.getString()
         set(authToken) = KEY_AUTH_TOKEN.setString(authToken)
 
-    var username: String
+    override var userId: String
+        get() = KEY_USERID.getString()
+        set(authToken) = KEY_USERID.setString(authToken)
+
+    override var username: String
         get() = KEY_ACCOUNT_NAME.getString()
         set(accountName) = KEY_ACCOUNT_NAME.setString(accountName)
 

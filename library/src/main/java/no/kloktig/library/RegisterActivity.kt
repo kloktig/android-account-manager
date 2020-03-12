@@ -11,7 +11,7 @@ import kotlin.system.exitProcess
 
 class RegisterActivity : AccountAuthenticatorActivity(), View.OnClickListener {
     private lateinit var am: AccountManager
-    private lateinit var email: String
+    private lateinit var user: String
     private lateinit var password: String
 
     private lateinit var viewParams: ViewParameters
@@ -27,7 +27,7 @@ class RegisterActivity : AccountAuthenticatorActivity(), View.OnClickListener {
         setContentView(R.layout.layout_login)
 
         am = AccountManager.get(this)
-        email = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME) ?: ""
+        user = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME) ?: ""
         viewParams = setupView()
     }
 
@@ -37,18 +37,19 @@ class RegisterActivity : AccountAuthenticatorActivity(), View.OnClickListener {
     }
 
     private fun attemptLogin() {
-        email = viewParams.email.text.toString()
+        user = viewParams.email.text.toString()
         password = viewParams.password.text.toString()
 
         val authToken = viewParams.password.text.toString()
-        val account = Account(email, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE))
+        val accountType = intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE)
 
-        am.addAccountExplicitly(account, null, null)
-        am.setAuthToken(account,
-            AUTH_TOKEN_TYPE, authToken)
-
-        setAccountAuthenticatorResult(intent.extras)
-        setResult(RESULT_OK, intent)
+        Account(user, accountType).let { account ->
+            am.addAccountExplicitly(account, null, null)
+            am.setUserData(account, KEY_USERID, "MyUniqueID")
+            am.setAuthToken(account, AUTH_TOKEN_TYPE, authToken)
+            setAccountAuthenticatorResult(intent.extras)
+            setResult(RESULT_OK, intent)
+        }
 
         exitProcess(0)
     }
@@ -57,7 +58,7 @@ class RegisterActivity : AccountAuthenticatorActivity(), View.OnClickListener {
 
     private fun setupView(): ViewParameters {
         return ViewParameters(
-            email = R.id.email.get<EditText>().apply { setText(email) },
+            email = R.id.email.get<EditText>().apply { setText(user) },
             password = R.id.password.get(),
             loginButton = R.id.login_btn.get<Button>().apply { setOnClickListener(this@RegisterActivity) }
         )
@@ -66,5 +67,6 @@ class RegisterActivity : AccountAuthenticatorActivity(), View.OnClickListener {
     companion object {
         val ACCOUNT_TYPE = "no.kloktig.example"
         val AUTH_TOKEN_TYPE = "no.klokig.example.refresh"
+        val KEY_USERID = "no.kloktig.example.userid"
     }
 }

@@ -1,5 +1,7 @@
 package no.kloktig.accountmanager
 
+import AuthLocalStorage
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
@@ -10,16 +12,19 @@ class MainActivity : Activity() {
     private val register = 1
     private val tokenHandler = TokenHandler()
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.layout_main)
 
-        val userInfo = android.R.id.text1.getView<TextView>()
-        val tokenInfo = android.R.id.text2.getView<TextView>()
+        val userInfo = R.id.user_name.getView<TextView>()
+        val tokenInfo = R.id.refresh_token.getView<TextView>()
+        val userId = R.id.user_id.getView<TextView>()
 
-        val uiCallback = { user: String, token: String -> // TODO: Change to live data
-            tokenInfo.text = "Token: $token"
-            userInfo.text = "User: $user "
+        val uiCallback = { storage: AuthLocalStorage -> // TODO: Change to live data
+            tokenInfo.text = "Token: ${storage.refreshToken}"
+            userInfo.text = "User: ${storage.username} "
+            userId.text = "UserId: ${storage.userId} "
         }
 
         tokenHandler.getToken(this, register, uiCallback)

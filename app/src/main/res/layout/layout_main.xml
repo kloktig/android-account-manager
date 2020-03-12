@@ -13,10 +13,10 @@
     </StackView>
 
     <TextView
-        android:id="@android:id/text1"
+        android:id="@id/user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Empty"
+        android:text="The User Name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,11 +24,22 @@
         android:textSize="26dp"/>
 
     <TextView
-        android:id="@android:id/text2"
+        android:id="@id/user_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Something else"
-        app:layout_constraintTop_toBottomOf="@android:id/text1"
+        android:text="The User Name"
+        app:layout_constraintTop_toBottomOf="@id/user_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="26dp"
+        />
+
+    <TextView
+        android:id="@id/refresh_token"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="The Token!"
+        app:layout_constraintTop_toBottomOf="@id/user_id"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:textSize="26dp"

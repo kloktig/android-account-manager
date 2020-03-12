@@ -4,6 +4,7 @@ import android.accounts.*
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import java.util.*
 
 class AccountAuthenticator(private val context: Context) : AbstractAccountAuthenticator(context) {
 
@@ -33,16 +34,18 @@ class AccountAuthenticator(private val context: Context) : AbstractAccountAuthen
         response: AccountAuthenticatorResponse?,
         account: Account?, authTokenType: String?, options: Bundle?
     ): Bundle? {
-        AccountManager.get(context)
-            .peekAuthToken(account, authTokenType)?.let { token ->
+        AccountManager.get(context).let { am ->
+            am.peekAuthToken(account, authTokenType)?.let { token ->
                 if (token.isNotEmpty()) {
                     return Bundle().apply {
                         putString(AccountManager.KEY_ACCOUNT_NAME, account?.name)
                         putString(AccountManager.KEY_ACCOUNT_TYPE, account?.type)
                         putString(AccountManager.KEY_AUTHTOKEN, token)
+                        putString(AccountManager.KEY_USERDATA, am.getUserData(account, AccountManager.KEY_USERDATA))
                     }
                 }
             }
+        }
         throw Error("Token is empty! Response: $response, Account: $account, authTokenType: $authTokenType, options: $options")
     }
 
