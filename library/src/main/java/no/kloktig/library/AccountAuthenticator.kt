@@ -9,11 +9,11 @@ class AccountAuthenticator(private val context: Context) : AbstractAccountAuthen
 
     @Throws(NetworkErrorException::class)
     override fun addAccount(
-        response: AccountAuthenticatorResponse?,
-        accountType: String?,
+        response: AccountAuthenticatorResponse,
+        accountType: String,
         authTokenType: String?,
         requiredFeatures: Array<String?>?,
-        options: Bundle?
+        options: Bundle
     ): Bundle {
         val intent = Intent(context, RegisterActivity::class.java).apply {
             putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response)
@@ -25,13 +25,13 @@ class AccountAuthenticator(private val context: Context) : AbstractAccountAuthen
         }
     }
 
-    override fun confirmCredentials(response: AccountAuthenticatorResponse, account: Account, bundle: Bundle) = Bundle()
-    override fun editProperties(response: AccountAuthenticatorResponse, value: String) = Bundle()
+    override fun confirmCredentials(response: AccountAuthenticatorResponse?, account: Account?, bundle: Bundle?) = Bundle()
+    override fun editProperties(response: AccountAuthenticatorResponse?, value: String?) = Bundle()
 
     @Throws(NetworkErrorException::class)
     override fun getAuthToken(
-        response: AccountAuthenticatorResponse?,
-        account: Account?, authTokenType: String?, options: Bundle?
+        response: AccountAuthenticatorResponse,
+        account: Account, authTokenType: String?, options: Bundle
     ): Bundle? {
         AccountManager.get(context).let { am ->
             am.peekAuthToken(account, authTokenType)?.let { token ->
@@ -45,7 +45,7 @@ class AccountAuthenticator(private val context: Context) : AbstractAccountAuthen
         throw Error("Token is empty! Response: $response, Account: $account, authTokenType: $authTokenType, options: $options")
     }
 
-    override fun getAuthTokenLabel(authTokenType: String): String = ""
-    override fun hasFeatures(response: AccountAuthenticatorResponse, account: Account, features: Array<String>) = Bundle()
-    override fun updateCredentials(response: AccountAuthenticatorResponse, account: Account, authTokenType: String, loginOptions: Bundle) = Bundle()
+    override fun getAuthTokenLabel(authTokenType: String?): String = ""
+    override fun hasFeatures(response: AccountAuthenticatorResponse?, account: Account?, features: Array<String>?) = Bundle()
+    override fun updateCredentials(response: AccountAuthenticatorResponse?, account: Account?, authTokenType: String?, loginOptions: Bundle?) = Bundle()
 }

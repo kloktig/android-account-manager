@@ -9,7 +9,7 @@ import android.widget.TextView
 import no.kloktig.library.TokenHandler
 
 class MainActivity : Activity() {
-    private val register = 1
+    private val register = 2
     private val tokenHandler = TokenHandler()
 
     @SuppressLint("SetTextI18n")
