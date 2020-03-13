@@ -4,7 +4,6 @@ import android.accounts.*
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import java.util.*
 
 class AccountAuthenticator(private val context: Context) : AbstractAccountAuthenticator(context) {
 
@@ -21,7 +20,7 @@ class AccountAuthenticator(private val context: Context) : AbstractAccountAuthen
             putExtra(AccountManager.KEY_ACCOUNT_TYPE, accountType)
             putExtra(AccountManager.KEY_AUTH_TOKEN_LABEL, authTokenType)
         }
-        return Bundle().apply {
+         return Bundle().apply {
             putParcelable(AccountManager.KEY_INTENT, intent)
         }
     }
@@ -36,13 +35,10 @@ class AccountAuthenticator(private val context: Context) : AbstractAccountAuthen
     ): Bundle? {
         AccountManager.get(context).let { am ->
             am.peekAuthToken(account, authTokenType)?.let { token ->
-                if (token.isNotEmpty()) {
-                    return Bundle().apply {
-                        putString(AccountManager.KEY_ACCOUNT_NAME, account?.name)
-                        putString(AccountManager.KEY_ACCOUNT_TYPE, account?.type)
-                        putString(AccountManager.KEY_AUTHTOKEN, token)
-                        putString(AccountManager.KEY_USERDATA, am.getUserData(account, AccountManager.KEY_USERDATA))
-                    }
+                return Bundle().apply {
+                    putString(AccountManager.KEY_ACCOUNT_NAME, account?.name)
+                    putString(AccountManager.KEY_ACCOUNT_TYPE, account?.type)
+                    putString(AccountManager.KEY_AUTHTOKEN, token)
                 }
             }
         }

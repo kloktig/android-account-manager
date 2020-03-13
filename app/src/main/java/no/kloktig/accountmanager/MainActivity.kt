@@ -22,9 +22,9 @@ class MainActivity : Activity() {
         val userId = R.id.user_id.getView<TextView>()
 
         val uiCallback = { storage: AuthLocalStorage -> // TODO: Change to live data
-            tokenInfo.text = "Token: ${storage.refreshToken}"
-            userInfo.text = "User: ${storage.username} "
-            userId.text = "UserId: ${storage.userId} "
+            userInfo.text = "APP1 - ${storage.username} "
+            tokenInfo.text = "${storage.refreshToken}"
+            userId.text = "${storage.userId} "
         }
 
         tokenHandler.getToken(this, register, uiCallback)
