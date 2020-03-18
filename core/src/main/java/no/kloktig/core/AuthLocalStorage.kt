@@ -1,5 +1,5 @@
 interface AuthLocalStorage {
-    val refreshToken: String
-    val userId: String
-    val username: String
+    var refreshToken: String
+    var userId: String
+    var username: String
 }

@@ -49,7 +49,7 @@ class AccountAuthenticator(private val context: Context) : AbstractAccountAuthen
     override fun hasFeatures(response: AccountAuthenticatorResponse?, account: Account?, features: Array<String>?) = Bundle()
     override fun updateCredentials(response: AccountAuthenticatorResponse?, account: Account?, authTokenType: String?, loginOptions: Bundle?): Bundle {
 
-        val intent = Intent(context, TokenUpdateActivity::class.java).apply {
+        val intent = Intent(context, RegisterActivity::class.java).apply {
             putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response)
             putExtra(AccountManager.KEY_ACCOUNT_TYPE, account?.type)
             putExtra(AccountManager.KEY_ACCOUNT_NAME, account?.name)

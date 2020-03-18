@@ -28,9 +28,7 @@ class AuthSendDown(context: Context) : AuthLocalStorage {
     private fun String.setString(value: String) = preferences.edit().putString(this, value).apply()
     private fun String.getString() = preferences.getString(this, "")!!
 
-    override fun toString(): String {
-        return "$username - $userId:$refreshToken"
-    }
+    override fun toString() = "$username - $userId:$refreshToken"
 
     init {
         preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)

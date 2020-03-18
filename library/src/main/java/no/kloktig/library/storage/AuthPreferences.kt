@@ -26,6 +26,8 @@ class AuthPreferences(context: Context) : AuthLocalStorage {
     private fun String.setString(value: String) = preferences.edit().putString(this, value).apply()
     private fun String.getString() = preferences.getString(this, "")!!
 
+    override fun toString() = "$username - $userId:$refreshToken"
+
     init {
         preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
@@ -34,8 +36,8 @@ class AuthPreferences(context: Context) : AuthLocalStorage {
         fun from(context: Context, bundle: Bundle): AuthPreferences =
             AuthPreferences(context).apply {
                 bundle.getString(AccountManager.KEY_ACCOUNT_NAME)?.let { username = it }
-                bundle.getString(AccountManager.KEY_AUTHTOKEN)?.let { UidAndtoken ->
-                    UidAndtoken.split(":").let {
+                bundle.getString(AccountManager.KEY_AUTHTOKEN)?.let { uidAndtoken ->
+                    uidAndtoken.split(":").let {
                         userId = it[0]
                         refreshToken = it[1]
                     }

@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="no.kloktig.accountmanager">
+    package="no.kloktig.accountmanager"
+    android:sharedUserId="no.nrk">
 
     <application
         android:allowBackup="true"

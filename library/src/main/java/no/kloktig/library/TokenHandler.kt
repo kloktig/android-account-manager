@@ -1,7 +1,5 @@
 package no.kloktig.library
 
-import AuthLocalStorage
-import AuthPreferences
 import android.accounts.AccountManager
 import android.accounts.AccountManagerCallback
 import android.accounts.AccountManagerFuture
@@ -12,24 +10,23 @@ import androidx.core.app.ActivityCompat
 import no.kloktig.library.storage.AuthSendDown
 
 class TokenHandler {
-    companion object{
+    companion object {
         var num = 0
     }
 
-    fun getToken(activity: Activity, requestCode: Int, uiCallback: (AuthLocalStorage) -> Unit) {
+    fun getToken(activity: Activity, requestCode: Int) {
         // Write to a "Downward buffer" (using shared preferences). These are read by to registration Activity
         AuthSendDown.setValues(activity, "MyUserName", "MyUserId", "MyRefreshToken")
-        create(activity, requestCode, uiCallback)
+        create(activity, requestCode)
     }
 
-    fun updateToken(activity: Activity, requestCode: Int, uiCallback: (AuthLocalStorage) -> Unit) {
+    fun updateToken(activity: Activity, requestCode: Int) {
         // Write to a "Downward buffer" (using shared preferences). These are read by to registration Activity
-        AuthSendDown.setValues(activity, "MyUserName", "MyUserId", "MyUpdatedToken${num++}")
-        update(activity, requestCode, uiCallback)
+        AuthSendDown.setValues(activity, "MyUserName", "MyUserId", "${activity.componentName.packageName}-Token-${num++}")
+        update(activity, requestCode)
     }
 
-
-    private fun create(activity: Activity, requestCode: Int, uiCallback: (AuthLocalStorage) -> Unit) {
+    private fun create(activity: Activity, requestCode: Int) {
         val am = AccountManager.get(activity)
         am.getAuthTokenByFeatures(
             RegisterActivity.ACCOUNT_TYPE,
@@ -38,65 +35,44 @@ class TokenHandler {
             activity,
             null,
             null,
-            GetAuthTokenCallback(
+            TokenCallback(
                 activity = activity,
-                requestCode = requestCode,
-                uiCallback = uiCallback
+                requestCode = requestCode
             ),
             null
         )
     }
 
-    private fun update(activity: Activity, requestCode: Int, uiCallback: (AuthLocalStorage) -> Unit) {
+    private fun update(activity: Activity, requestCode: Int) {
         val am = AccountManager.get(activity)
         am.getAccountsByType(RegisterActivity.ACCOUNT_TYPE).let {
-            am.updateCredentials(
-                it.first(),
-                RegisterActivity.AUTH_TOKEN_TYPE,
-                null,
-                activity,
-                UpdateAuthTokenCallback(
-                    activity = activity,
-                    requestCode = requestCode,
-                    uiCallback = uiCallback
-                ),
-                null
-            )
-        }
-    }
-
-    private class GetAuthTokenCallback(
-        private val activity: Activity,
-        private val requestCode: Int,
-        val uiCallback: (AuthLocalStorage) -> Unit
-    ) : AccountManagerCallback<Bundle> {
-        override fun run(result: AccountManagerFuture<Bundle>) {
-            val bundle = result.result
-            val intent = bundle[AccountManager.KEY_INTENT] as Intent?
-
-            if (null != intent) {
-                ActivityCompat.startActivityForResult(activity, intent, requestCode, null)
+            if(it.isEmpty()) {
+               create(activity, requestCode)
             } else {
-                uiCallback.invoke(AuthPreferences.from(activity, bundle))
+                am.updateCredentials(
+                    it.first(),
+                    RegisterActivity.AUTH_TOKEN_TYPE,
+                    null,
+                    activity,
+                    TokenCallback(
+                        activity = activity,
+                        requestCode = requestCode
+                    ),
+                    null
+                )
             }
         }
     }
 
-    private class UpdateAuthTokenCallback(
+    private class TokenCallback(
         private val activity: Activity,
-        private val requestCode: Int,
-        val uiCallback: (AuthLocalStorage) -> Unit
+        private val requestCode: Int
     ) : AccountManagerCallback<Bundle> {
         override fun run(result: AccountManagerFuture<Bundle>) {
             val bundle = result.result
-            val intent = bundle[AccountManager.KEY_INTENT] as Intent?
-
-            if (null != intent) {
+            (bundle[AccountManager.KEY_INTENT] as Intent?)?.let { intent ->
                 ActivityCompat.startActivityForResult(activity, intent, requestCode, null)
-            } else {
-                uiCallback.invoke(AuthPreferences.from(activity, bundle))
             }
-
         }
     }
 }
