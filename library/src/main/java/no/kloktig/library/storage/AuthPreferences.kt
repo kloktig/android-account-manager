@@ -1,5 +1,7 @@
+import android.accounts.AccountManager
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Bundle
 
 class AuthPreferences(context: Context) : AuthLocalStorage {
     private val PREFS_NAME = "auth"
@@ -26,5 +28,18 @@ class AuthPreferences(context: Context) : AuthLocalStorage {
 
     init {
         preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    }
+
+    companion object {
+        fun from(context: Context, bundle: Bundle): AuthPreferences =
+            AuthPreferences(context).apply {
+                bundle.getString(AccountManager.KEY_ACCOUNT_NAME)?.let { username = it }
+                bundle.getString(AccountManager.KEY_AUTHTOKEN)?.let { UidAndtoken ->
+                    UidAndtoken.split(":").let {
+                        userId = it[0]
+                        refreshToken = it[1]
+                    }
+                }
+            }
     }
 }

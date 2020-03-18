@@ -47,5 +47,19 @@ class AccountAuthenticator(private val context: Context) : AbstractAccountAuthen
 
     override fun getAuthTokenLabel(authTokenType: String?): String = ""
     override fun hasFeatures(response: AccountAuthenticatorResponse?, account: Account?, features: Array<String>?) = Bundle()
-    override fun updateCredentials(response: AccountAuthenticatorResponse?, account: Account?, authTokenType: String?, loginOptions: Bundle?) = Bundle()
+    override fun updateCredentials(response: AccountAuthenticatorResponse?, account: Account?, authTokenType: String?, loginOptions: Bundle?): Bundle {
+
+        val intent = Intent(context, TokenUpdateActivity::class.java).apply {
+            putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response)
+            putExtra(AccountManager.KEY_ACCOUNT_TYPE, account?.type)
+            putExtra(AccountManager.KEY_ACCOUNT_NAME, account?.name)
+            putExtra(AccountManager.KEY_AUTH_TOKEN_LABEL, authTokenType)
+        }
+
+        return Bundle().apply {
+            putParcelable(AccountManager.KEY_INTENT, intent)
+        }
+    }
+
+
 }
