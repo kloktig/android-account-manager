@@ -42,7 +42,7 @@
         app:layout_constraintTop_toBottomOf="@id/user_id"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:textSize="26dp"
+        android:textSize="16dp"
         />
 
     <Button

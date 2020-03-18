@@ -21,9 +21,7 @@ class AuthSendDown(context: Context) : AuthLocalStorage {
         get() = KEY_USERID.getString()
         set(authToken) = KEY_USERID.setString(authToken)
 
-    override var username: String
-        get() = KEY_ACCOUNT_NAME.getString()
-        set(accountName) = KEY_ACCOUNT_NAME.setString(accountName)
+    override var username: String = "USER"
 
     private fun String.setString(value: String) = preferences.edit().putString(this, value).apply()
     private fun String.getString() = preferences.getString(this, "")!!

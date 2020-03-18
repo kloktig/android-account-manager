@@ -11,34 +11,4 @@ package="no.kloktig.library">
     android:name="android.permission.MANAGE_ACCOUNTS"
     android:maxSdkVersion="22" />
 
-<application
-    android:allowBackup="true"
-    android:icon="@mipmap/ic_launcher"
-    android:roundIcon="@mipmap/ic_launcher_round"
-    android:supportsRtl="true"
-    android:theme="@style/AppTheme"
-    android:exported="true" >
-
-    <service
-        android:name="no.kloktig.library.AuthenticatorService"
-        android:exported="true" >
-        <intent-filter>
-            <action android:name="android.accounts.AccountAuthenticator" />
-        </intent-filter>
-
-        <meta-data
-            android:name="android.accounts.AccountAuthenticator"
-            android:resource="@xml/authenticator" />
-    </service>
-
-    <activity
-        android:name="no.kloktig.library.RegisterActivity"
-        android:label="@string/register"
-        android:exported="true" >
-    </activity>
-
-
-</application>
-
-
 </manifest>

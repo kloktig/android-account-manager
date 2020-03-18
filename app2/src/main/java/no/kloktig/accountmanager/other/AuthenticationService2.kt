@@ -1,11 +1,16 @@
-package no.kloktig.library
+package no.kloktig.accountmanager.other
 
 import android.accounts.AccountManager
 import android.app.Service
 import android.content.Intent
 import android.os.IBinder
+import no.kloktig.library.AccountAuthenticator
+import no.kloktig.library.infrastructure.AppModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
 
-class AuthenticatorService : Service() {
+class AuthenticatorService2 : Service() {
     private val authenticator: Lazy<AccountAuthenticator>
         get() = lazy { AccountAuthenticator(context = this) }
 

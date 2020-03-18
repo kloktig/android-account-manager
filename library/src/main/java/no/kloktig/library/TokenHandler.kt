@@ -1,5 +1,6 @@
 package no.kloktig.library
 
+import AuthLocalStorage
 import android.accounts.AccountManager
 import android.accounts.AccountManagerCallback
 import android.accounts.AccountManagerFuture
@@ -8,8 +9,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.core.app.ActivityCompat
 import no.kloktig.library.storage.AuthSendDown
+import org.koin.java.KoinJavaComponent.inject
+import java.lang.Error
+import java.lang.Exception
 
 class TokenHandler {
+
     companion object {
         var num = 0
     }
@@ -49,17 +54,21 @@ class TokenHandler {
             if(it.isEmpty()) {
                create(activity, requestCode)
             } else {
-                am.updateCredentials(
-                    it.first(),
-                    RegisterActivity.AUTH_TOKEN_TYPE,
-                    null,
-                    activity,
-                    TokenCallback(
-                        activity = activity,
-                        requestCode = requestCode
-                    ),
-                    null
-                )
+                try {
+                    am.updateCredentials(
+                        it.first(),
+                        RegisterActivity.AUTH_TOKEN_TYPE,
+                        null,
+                        activity,
+                        TokenCallback(
+                            activity = activity,
+                            requestCode = requestCode
+                        ),
+                        null
+                    )
+                } catch (ex: Exception) {
+                    val e = ex
+                }
             }
         }
     }
@@ -68,11 +77,25 @@ class TokenHandler {
         private val activity: Activity,
         private val requestCode: Int
     ) : AccountManagerCallback<Bundle> {
+        val storage by inject(AuthLocalStorage::class.java)
+
         override fun run(result: AccountManagerFuture<Bundle>) {
             val bundle = result.result
-            (bundle[AccountManager.KEY_INTENT] as Intent?)?.let { intent ->
+            val intent = bundle[AccountManager.KEY_INTENT] as Intent?
+
+            if (null != intent) {
                 ActivityCompat.startActivityForResult(activity, intent, requestCode, null)
+            } else {
+                storage.apply {
+                    bundle.getString(AccountManager.KEY_AUTHTOKEN)?.let { usernameAndToken ->
+                        val parts = usernameAndToken.split(":")
+                        userId = parts[0]
+                        refreshToken = parts[1]
+                    }
+
+                }
             }
+
         }
     }
 }

@@ -47,6 +47,7 @@ class MainActivity : Activity() {
         }
 
         R.id.load_button.getView<Button>().setOnClickListener {
+            tokenHandler.getToken(this, register)
             uiCallback.invoke(storage)
         }
 

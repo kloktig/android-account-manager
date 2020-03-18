@@ -5,14 +5,21 @@ import android.accounts.Account
 import android.accounts.AccountAuthenticatorActivity
 import android.accounts.AccountManager
 import android.os.Bundle
+import no.kloktig.library.infrastructure.AppModule
 import no.kloktig.library.storage.AuthSendDown
 import org.koin.android.ext.android.inject
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
+import org.koin.core.context.startKoin
+import java.lang.Exception
 
 class RegisterActivity : AccountAuthenticatorActivity() {
     private val storage: AuthLocalStorage by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
         val am = AccountManager.get(this)
         registerAccount(am)
     }
@@ -27,7 +34,6 @@ class RegisterActivity : AccountAuthenticatorActivity() {
             intent.putExtra(AccountManager.KEY_ACCOUNT_NAME, params.username)
             storage.apply {
                 userId = params.userId
-                username = params.username
                 refreshToken = params.refreshToken
             }
         }
